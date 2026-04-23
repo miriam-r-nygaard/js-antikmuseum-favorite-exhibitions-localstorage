@@ -164,3 +164,33 @@ const exhibitionContainer = document.querySelector("#exhibition-container");
 // [] er et tomt array
 // NOTE: hvorfor )) her?
 let favoriteIds = JSON.parse(localStorage.getItem("favoriteExhibitions")) || [];
+
+//returnerer true eller false id
+function isFavorite(id) {
+  return favoriteIds.includes(id);
+}
+
+// giver en sjerne der kan skifte mellem hvid og sort
+function displayExhibitions(exhibitionList) {
+  const html = exhibitionList.map((item) => {
+    let star;
+    if (isFavorite(item.id)) {
+      //kan findes på nettet som unicode star
+      star = "★";
+    } else {
+      star = "☆";
+    }
+    return `
+        <article>
+        <button class="favorite-btn" data-id="${item.id}" aria-label="Vælg favorit" >${star}</button>
+        <h2>${item.udstillingsnavn}</h2>
+        <h3><span id="periode">Periode: </span>${item.periode}</h3>
+        <h3><span id="placering">Placering: </span>${item.placering}</h3>
+        <p><span id="beskrivelse">Beskrivelse: </span>${item.beskrivelse}</p>
+        <p>Startdato:  <time datetime="${item.startdato}">${item.startdato}</time></p>
+        <p>Slutdato:  <time datetime="${item.slutdato}">${item.slutdato}</time></p>
+        </article>
+      `;
+  });
+  exhibitionContainer.innerHTML = html.join("");
+}
